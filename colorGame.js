@@ -1,4 +1,6 @@
-var colors = generateRandomColors(6)
+
+var numSquares = 6
+var colors = generateRandomColors(numSquares)
 
 var squares = document.querySelectorAll(".square")
 var colorDisplay = document.getElementById("colorDisplay")
@@ -9,18 +11,45 @@ var resetBtn = document.querySelector("#reset")
 var pickedColor = pickColor()
 
 
+var modeBtns = document.querySelectorAll(".mode")
 
-resetBtn.addEventListener("click", function() {
-	colors = generateRandomColors(6)
+for(var i = 0; i < modeBtns.length; i++) {
+	modeBtns[i].addEventListener("click", function() {
+		modeBtns[0].classList.remove("selected")
+		modeBtns[1].classList.remove("selected")
+		this.classList.add("selected")
+
+		//terenary operator
+		this.textContent === "Easy" ? numSquares = 3: numSquares = 6
+		reset()
+	})
+}
+
+
+function reset() {
+	colors = generateRandomColors(numSquares)
 	pickedColor = pickColor()
 	colorDisplay.textContent = pickedColor
+	
+	resetBtn.textContent = "New Colors"
+	messageDisplay.textContent = ""
+
 
 	for(var i =0; i < squares.length; i++) {
 		//add initial colors to squares
-		squares[i].style.backgroundColor = colors[i]
+		if(colors[i]) {
+			squares[i].style.display = "block"
+			squares[i].style.backgroundColor = colors[i]
+		} else {
+			squares[i].style.display = "none"
+		}
 	}
 	// h1.style.backgroundColor = "#232323"
-	h1.style.backgroundColor = document.body.style.backgroundColor
+	h1.style.backgroundColor = "steelblue"
+}
+
+resetBtn.addEventListener("click", function() {
+	reset()
 })
 
 
@@ -40,6 +69,7 @@ for(var i =0; i < squares.length; i++) {
 			messageDisplay.textContent = "Correct!"
 			resetBtn.textContent = "Paly Again?"
 			changeColors(clickedColor)
+			h1.style.backgroundColor = clickedColor
 		} else {
 			this.style.backgroundColor = "#232323"
 			messageDisplay.textContent = "Try Again"
@@ -49,15 +79,12 @@ for(var i =0; i < squares.length; i++) {
 
 
 function changeColors(color) {
-
-	h1.style.backgroundColor = color
 	for(var i = 0; i < squares.length; i++) {
 		squares[i].style.backgroundColor = color
 	}
 }
 
 function pickColor() {
-	
 	var random = Math.floor(Math.random() * colors.length)
 	return colors[random]
 }
