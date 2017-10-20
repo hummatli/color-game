@@ -4,7 +4,24 @@ var squares = document.querySelectorAll(".square")
 var colorDisplay = document.getElementById("colorDisplay")
 var messageDisplay = document.getElementById("message")
 var h1 = document.querySelector("h1")
+var resetBtn = document.querySelector("#reset")
+
 var pickedColor = pickColor()
+
+
+
+resetBtn.addEventListener("click", function() {
+	colors = generateRandomColors(6)
+	pickedColor = pickColor()
+	colorDisplay.textContent = pickedColor
+
+	for(var i =0; i < squares.length; i++) {
+		//add initial colors to squares
+		squares[i].style.backgroundColor = colors[i]
+	}
+	// h1.style.backgroundColor = "#232323"
+	h1.style.backgroundColor = document.body.style.backgroundColor
+})
 
 
 colorDisplay.textContent = pickedColor
@@ -21,6 +38,7 @@ for(var i =0; i < squares.length; i++) {
 		//compare color to pickedColor
 		if(clickedColor === pickedColor) {
 			messageDisplay.textContent = "Correct!"
+			resetBtn.textContent = "Paly Again?"
 			changeColors(clickedColor)
 		} else {
 			this.style.backgroundColor = "#232323"
